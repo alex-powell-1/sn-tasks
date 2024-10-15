@@ -11,7 +11,7 @@ from reporting import product_reports
 from database import Database
 from date_presets import Dates
 from templates.admin_report_html import boiler_plate, css, body_start, body_end
-from . import products
+import products
 from error_handler import ScheduledTasksErrorHandler as error_handler
 from email.utils import formataddr
 from jinja2 import Template

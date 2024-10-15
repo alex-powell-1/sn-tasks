@@ -1,0 +1,36 @@
+services:
+  tasks:
+    build:
+      context: .
+    # ports:
+    #   - "${PORT}:${PORT}"
+    restart: always
+    secrets:
+      - my_secret
+    environment:
+      SECRET_FILE: "${SECRET_FILE_PATH}"
+      PORT: "${PORT}"
+      UID: "${UID}"
+    
+    # networks:
+    #   - my_network
+    volumes:
+      - "${LOGS_PATH}:/app/logs"
+      - "${PUBLIC_FILES_PATH}:/app/public_files"
+      
+secrets:
+  my_secret:
+    file: "${CONFIG_FILE_PATH}/config.json"
+
+# networks:
+#   my_network:
+#     driver: bridge
+#     ipam:
+#         driver: default
+#         config:
+#           - subnet: "${SUBNET}"
+#           - gateway: "${GATEWAY}"
+
+volumes:
+  logs_volume:
+  public_files_volume:

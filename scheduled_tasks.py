@@ -1,7 +1,7 @@
 from datetime import datetime
 from customer_tools import customers
 import brands
-from . import products
+import products
 import customer_tools.stock_notification as stock_notification
 from customer_tools.merge import Merge
 from email_engine import Email

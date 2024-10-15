@@ -6,5 +6,4 @@ pyodbc==5.0.1
 python_dateutil==2.8.2
 pytz==2023.3.post1
 Requests==2.32.3
-setup==1.0
 twilio==8.10.2
