@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: white; height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        html {
+            font-family: Lora;
+        }
+
+        h1 {
+            color:#000000;
+            font-size: 35px;
+            font-weight: 700;
+            margin-bottom: 0px;
+
+        }
+
+        h2 {
+            color:#000000;
+            font-weight: 200;
+            font-size: 20px;
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
+
+        h3 {
+            color:#000000;
+            font-size: 16px;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        h4 {
+            color:#000000;
+            margin-top: 15px;
+            margin-bottom: 0px;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        h5 {
+            font-family: 'Arial';
+            margin: 0px;
+            font-size: 13px;
+        }
+
+        p {
+            margin: 5px 0px 10px 0px;
+        }
+
+        </style>
+</head>
+<body style="background-color:#ffffff;">
+    <span class="preheader" style="display: none; overflow: hidden;">Daily Revenue Report</span>
+        <div>
+            <div id="logo">
+                <img class="logo" src="cid:image1">
+            </div>
+
+            <div id="header">
+                <h1>Daily Revenue Report</h1>
+                <h3>{{ date }}</h3>
+            </div>
+
+            <div id="main">
+                <h4>Total Revenue All Stores: ${{ "{:,.2f}".format(total['revenue'] - deposit_total - gc_purchase_total) }}</h4>
+                {% for x in store_data %}
+                <h4>Store: {{ x['store'] }}</h4>
+                <ul>
+                    {% if x['deposits'] and x['gc_liability'] %}
+                    <li>Revenue: ${{ "{:,.2f}".format(x['store_total']['revenue'] - x['deposits']['total_deposits'] - x['gc_liability']) }}</li>
+
+                    {% elif x['deposits'] %}
+                    <li>Revenue: ${{ "{:,.2f}".format(x['store_total']['revenue'] - x['deposits']['total_deposits']) }}</li>
+
+                    {% elif x['gc_liability'] %}
+                    <li>Revenue: ${{ "{:,.2f}".format(x['store_total']['revenue'] - x['gc_liability']) }}</li>
+                    {% else %}
+                    <li>Revenue: ${{ "{:,.2f}".format(x['store_total']['revenue']) }}</li>
+                    {% endif %}
+
+                    <li>Payments by Pay Code</li>
+                        <ul>
+                            {% if x['cash']['revenue'] != None %}<li> Cash: ${{ "{:,.2f}".format(x['cash']['revenue']) }}</li>{% endif %}
+                            {% if x['check']['revenue'] != None %}<li> Check: ${{ "{:,.2f}".format(x['check']['revenue']) }}{% endif %}
+                            {% if x['credit']['revenue'] != None %}<li> Credit: ${{ "{:,.2f}".format(x['credit']['revenue']) }}</li>{% endif %}
+                            {% if x['gift']['revenue'] != None %}<li> Gift Card: ${{ "{:,.2f}".format(x['gift']['revenue']) }}</li>{% endif %}
+                            {% if x['loyalty']['revenue'] != None %}<li> Loyalty: ${{ "{:,.2f}".format(x['loyalty']['revenue']) }}</li>{% endif %}
+                            {% if x['store_credit']['revenue'] != None %}<li> Store Credit: ${{ "{:,.2f}".format(x['store_credit']['revenue']) }}</li>{% endif %}
+                        </ul>
+                    {% if x['deposits'] %}
+                    <li> Deposits by Pay Code</li>
+                        <ul>
+                            {% for k, v in x['deposits'].items() %}
+                            {% if k != 'total_deposits' %}
+                            <li>{{ k.title() }}: ${{ "{:,.2f}".format(v) }}</li>{% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if x['gc_liability'] != None %}
+                    <li> Gift Card Purchases: ${{ "{:,.2f}".format(x['gc_liability']) }}</li>
+                    {% endif %}
+                </ul>
+                {% endfor %}
+            </div>
+        </div>
+</body>
+</html>
